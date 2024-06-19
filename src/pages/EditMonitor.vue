@@ -476,6 +476,21 @@
                             </div>
 
                             <div class="my-3">
+                                <label for="not_event_type" class="form-label">Notification Type</label>
+                                <select id="not_event_type" v-model="monitor.notification_event_type" class="form-select">
+                                    <option value="both" selected>
+                                        Both
+                                    </option>
+                                    <option value="up">
+                                        Only UP 
+                                    </option>
+                                    <option value="down">
+                                        Only DOWN
+                                    </option>
+                                </select>
+                            </div>
+
+                            <div class="my-3">
                                 <label for="retry-interval" class="form-label">
                                     {{ $t("Heartbeat Retry Interval") }}
                                     <span>({{ $t("retryCheckEverySecond", [ monitor.retryInterval ]) }})</span>
@@ -974,7 +989,8 @@ const monitorDefaults = {
     kafkaProducerSsl: false,
     kafkaProducerAllowAutoTopicCreation: false,
     gamedigGivenPortOnly: true,
-    remote_browser: null
+    remote_browser: null,
+    notification_event_type: "both",
 };
 
 export default {

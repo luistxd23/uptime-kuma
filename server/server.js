@@ -776,6 +776,7 @@ let needSetup = false;
                 bean.hostname = monitor.hostname;
                 bean.game = monitor.game;
                 bean.maxretries = monitor.maxretries;
+                bean.notification_event_type = monitor.notification_event_type;
                 bean.port = parseInt(monitor.port);
 
                 if (isNaN(bean.port)) {

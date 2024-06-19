@@ -169,10 +169,26 @@ class Notification {
      */
     static async send(notification, msg, monitorJSON = null, heartbeatJSON = null) {
         if (this.providerList[notification.type]) {
-            return this.providerList[notification.type].send(notification, msg, monitorJSON, heartbeatJSON);
+            if(this.toSend(monitorJSON, heartbeatJSON)) {
+                return this.providerList[notification.type].send(notification, msg, monitorJSON, heartbeatJSON);
+            } else {
+                throw new Error("Event not matching with conditions set in the monitor.");
+            }
         } else {
             throw new Error("Notification type is not supported");
         }
+    }
+
+    static toSend(monitorJSON = null, heartbeatJSON = null) {
+        if( !monitorJSON || !heartbeatJSON ) {
+            return true;
+        }
+
+        return (
+            (monitorJSON.notification_event_type == 'up' && heartbeatJSON.status == 1) ||
+            (monitorJSON.notification_event_type == 'down' && heartbeatJSON.status == 0) ||
+            monitorJSON.notification_event_type == 'both'
+        )
     }
 
     /**

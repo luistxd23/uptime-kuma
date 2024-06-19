@@ -112,6 +112,7 @@ class Monitor extends BeanModel {
             hostname: this.hostname,
             port: this.port,
             maxretries: this.maxretries,
+            notification_event_type: this.notification_event_type,
             weight: this.weight,
             active: await this.isActive(),
             forceInactive: !await Monitor.isParentActive(this.id),
