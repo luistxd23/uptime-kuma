@@ -25,6 +25,21 @@
                             <input id="notification-name" v-model="notification.name" type="text" class="form-control" required>
                         </div>
 
+                        <div class="my-3">
+                            <label for="not_event_type" class="form-label">Notification Type</label>
+                            <select id="not_event_type" v-model="notification.notification_event_type" class="form-select">
+                                <option value="both" selected>
+                                    Both
+                                </option>
+                                <option value="up">
+                                    Only UP 
+                                </option>
+                                <option value="down">
+                                    Only DOWN
+                                </option>
+                            </select>
+                        </div>
+
                         <!-- form body -->
                         <component :is="currentForm" />
 
