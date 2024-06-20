@@ -169,10 +169,26 @@ class Notification {
      */
     static async send(notification, msg, monitorJSON = null, heartbeatJSON = null) {
         if (this.providerList[notification.type]) {
-            return this.providerList[notification.type].send(notification, msg, monitorJSON, heartbeatJSON);
+            if(this.toSend(notification, heartbeatJSON)) {
+                return this.providerList[notification.type].send(notification, msg, monitorJSON, heartbeatJSON);
+            } else {
+                throw new Error("Event not matching with conditions set in the monitor.");
+            }
         } else {
             throw new Error("Notification type is not supported");
         }
+    }
+
+    static toSend(notification = null, heartbeatJSON = null) {
+        if( !notification || !heartbeatJSON ) {
+            return true;
+        }
+
+        return (
+            (notification.notification_event_type == 'up' && heartbeatJSON.status == 1) ||
+            (notification.notification_event_type == 'down' && heartbeatJSON.status == 0) ||
+            notification.notification_event_type == 'both'
+        )
     }
 
     /**
@@ -200,6 +216,7 @@ class Notification {
         }
 
         bean.name = notification.name;
+        bean.notification_event_type = notification.notification_event_type;
         bean.user_id = userID;
         bean.config = JSON.stringify(notification);
         bean.is_default = notification.isDefault || false;
